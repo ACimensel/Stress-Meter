@@ -41,12 +41,11 @@ class CustomImageAdapter(private val context : Context) : BaseAdapter() {
         R.drawable.psm_bar, R.drawable.psm_running3,
         R.drawable.psm_neutral_child, R.drawable.psm_headache2,
     )
-
     private var chosenArray = 0
 
     init {
         chosenArray = (0..2).random()
-        Log.d("DEBUG:", chosenArray.toString())
+        Log.d("DEBUG: Random set is ", chosenArray.toString())
     }
 
     override fun getCount(): Int {
