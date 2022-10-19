@@ -1,12 +1,16 @@
 package com.example.stressmeter.activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stressmeter.R
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.util.*
 
 
 class ImageConfirmActivity : AppCompatActivity() {
@@ -30,9 +34,19 @@ class ImageConfirmActivity : AppCompatActivity() {
         }
 
         btnSubmit.setOnClickListener{
-//            if (bundle != null) {
-//                Toast.makeText(this, bundle.getInt("Score").toString(),Toast.LENGTH_LONG).show()
-//            }
+            if (bundle != null) {
+                val file = File(getExternalFilesDir(null), "StressLevels.csv")
+                if (!file.exists()) {
+                    file.createNewFile()
+                }
+
+                val fileWriter = FileWriter(file, true)
+                val buffWriter = BufferedWriter(fileWriter)
+                buffWriter.append(Date().time.toString()).append(",")
+                buffWriter.append(bundle.getInt("Score").toString()).append("\n")
+                buffWriter.flush()
+                buffWriter.close()
+            }
 
             setResult(RESULT_OK, Intent())
             finish()

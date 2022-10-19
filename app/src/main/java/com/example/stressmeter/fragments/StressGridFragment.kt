@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.stressmeter.R
 import com.example.stressmeter.activities.ImageConfirmActivity
+import com.example.stressmeter.activities.MainActivity
 import com.example.stressmeter.adapters.CustomImageAdapter
 
 
@@ -33,6 +35,8 @@ class StressGridFragment : Fragment() {
         adapter = CustomImageAdapter(requireActivity())
         imageGrid.adapter = adapter
         imageGrid.setOnItemClickListener { _, _, position, _ ->
+            (activity as MainActivity).stopVibration()
+
             val intent = Intent(requireActivity(), ImageConfirmActivity::class.java)
             intent.putExtra("Score", gridPosScores[position])
             intent.putExtra("Image", imageGrid.getItemAtPosition(position) as Int)
@@ -41,6 +45,8 @@ class StressGridFragment : Fragment() {
 
         val button = view.findViewById<Button>(R.id.button_more_images)
         button.setOnClickListener{
+            (activity as MainActivity).stopVibration()
+
             adapter.changeImages()
         }
 

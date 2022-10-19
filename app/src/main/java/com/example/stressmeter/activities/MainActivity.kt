@@ -1,28 +1,37 @@
 package com.example.stressmeter.activities
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Bundle
-import com.google.android.material.navigation.NavigationView
+import android.os.VibrationEffect
+import android.os.Vibrator
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.example.stressmeter.R
 import com.example.stressmeter.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var vibrator: Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -37,10 +46,43 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        checkPermissions(this)
+
+        vibrator = applicationContext.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 500, 750), 0))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        stopVibration()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        else
+            super.onBackPressed()
+    }
+
+    private fun checkPermissions(activity: Activity?) {
+        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(activity, Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.VIBRATE), 0
+            )
+        }
+    }
+
+    fun stopVibration(){
+        vibrator.cancel()
     }
 }
