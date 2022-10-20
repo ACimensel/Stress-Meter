@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="4">
+        android:layout_weight="3.5">
 
         <TextView
             android:layout_width="match_parent"
@@ -21,10 +21,17 @@
             android:textSize="20sp"
             android:gravity="center"/>
 
-<!--        <lecho.lib.hellocharts.view.LineChartView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="fill_parent" />-->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"/>
     </LinearLayout>
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"/>
 
 
     <LinearLayout

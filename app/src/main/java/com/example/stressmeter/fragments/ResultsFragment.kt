@@ -2,13 +2,15 @@ package com.example.stressmeter.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.stressmeter.R
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import java.io.*
 
 
@@ -25,10 +27,32 @@ class ResultsFragment : Fragment() {
             file.createNewFile()
         }
         else{
+            fillChart(file)
             fillTable(file)
         }
+    }
 
+    private fun fillChart(file: File) {
+        val points = ArrayList<Entry>()
+        var instance = 0f
+        file.bufferedReader().forEachLine {
+            val stressLevels = it.split(",").toTypedArray()
+            points.add(Entry(instance, stressLevels[1].toFloat()))
+            instance++
+        }
 
+        val vl = LineDataSet(points, "Stress Levels")
+        vl.setDrawValues(false)
+        vl.setDrawFilled(true)
+        vl.lineWidth = 3f
+        vl.fillColor = Color.GRAY
+
+        val lineChart = requireActivity().findViewById<com.github.mikephil.charting.charts.LineChart>(R.id.lineChart)
+        lineChart.data = LineData(vl)
+        lineChart.setTouchEnabled(true)
+        lineChart.setPinchZoom(true)
+        lineChart.description.text = ""
+        lineChart.setNoDataText("No stress level results yet!")
     }
 
     private fun fillTable(file: File){
@@ -41,7 +65,6 @@ class ResultsFragment : Fragment() {
             val tv0 = TextView(requireActivity())
             tv0.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f)
             tv0.text = stressLevels[0]
-            tv0.setBackgroundColor(Color.LTGRAY)
             row.addView(tv0)
 
             val tv1 = TextView(requireActivity())
