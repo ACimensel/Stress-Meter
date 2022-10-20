@@ -24,4 +24,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="a_graph_showing_your_stress_levels">A graph showing your Stress Levels</string>
+    <string name="summary_of_results">Summary of Results</string>
 </resources>

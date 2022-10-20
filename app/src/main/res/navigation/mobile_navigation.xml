@@ -6,13 +6,15 @@
     app:startDestination="@+id/nav_stress_grid">
 
     <fragment
-        android:id="@+id/nav_results"
-        android:name="com.example.stressmeter.fragments.ResultsFragment"
-        android:label="@string/nav_header_title"
-        tools:layout="@layout/fragment_results" />
-    <fragment
         android:id="@+id/nav_stress_grid"
         android:name="com.example.stressmeter.fragments.StressGridFragment"
         android:label="@string/nav_header_title"
         tools:layout="@layout/fragment_stress_grid" />
+
+    <fragment
+        android:id="@+id/nav_results"
+        android:name="com.example.stressmeter.fragments.ResultsFragment"
+        android:label="@string/nav_header_title"
+        tools:layout="@layout/fragment_results" />
+
 </navigation>
