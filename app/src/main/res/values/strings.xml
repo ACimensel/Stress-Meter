@@ -26,4 +26,6 @@
     <string name="cancel">Cancel</string>
     <string name="a_graph_showing_your_stress_levels">A graph showing your Stress Levels</string>
     <string name="summary_of_results">Summary of Results</string>
+    <string name="time">Time</string>
+    <string name="stress">Stress</string>
 </resources>
